@@ -267,7 +267,9 @@ require('lazy').setup({
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000
-  }, -- { import = 'custom.plugins' },
+  },
+  { import = 'custom.plugins' },
+
 }, {})
 
 require("catppuccin").setup({
@@ -482,6 +484,9 @@ vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'c', 'cpp',  'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    sync_install = false,
+    ignore_install = {},
+    modules = {},
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -617,7 +622,7 @@ local servers = {
   clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -626,7 +631,7 @@ local servers = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-      -- diagnostics = { disable = { 'missing-fields' } },
+      diagnostics = { disable = { 'missing-fields' } },
     },
   },
 }
@@ -656,6 +661,7 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
@@ -664,13 +670,16 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+  enabled = true,
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
   completion = {
-    completeopt = 'menu,menuone,noinsert'
+    completeopt = 'menu,menuone,noinsert',
+    keyword_length = 3,
+
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -705,6 +714,10 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  }
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
