@@ -733,7 +733,7 @@ vim.keymap.set('i', '<', '<><left>', {})
 vim.keymap.set('i', '"', '""<left>', {})
 
 -- toggle nvim tree 
-vim.g.show_tree = true
+vim.g.show_tree = false
 function _G.toggle_nvim_tree()
   if vim.g.show_tree == true then
     vim.g.show_tree = false
@@ -744,4 +744,4 @@ function _G.toggle_nvim_tree()
   end
 end
 vim.keymap.set('n', '<leader>tt', _G.toggle_nvim_tree, { desc = '[T]oggle [T]ree' })
-
+vim.keymap.set('t', '<leader><Esc>', '<C-\\><C-n>)', {desc = 'Exit terminal insert mode'})
